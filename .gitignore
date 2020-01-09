@@ -13,3 +13,7 @@
 /common.Core/obj
 /commom.Tool/obj
 /LZ.IService/obj
+/commom.Tool/bin/Debug/netcoreapp3.0
+/common.Interface/bin/Debug/netcoreapp3.0
+/LZ.IService/bin/Debug/netcoreapp3.0
+/LZ.Service/bin/Debug/netcoreapp3.0
