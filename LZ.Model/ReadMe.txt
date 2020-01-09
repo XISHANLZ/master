@@ -1,0 +1,1 @@
+Scaffold-DbContext "server=.;database=ConCard;uid=sa;pwd=123123;" Microsoft.EntityFrameworkCore.SqlServer -O Models -F

@@ -3,3 +3,13 @@
 ################################################################################
 
 /XISHANLZ/.vs/XISHANLZ
+/XISHANLZ/bin/Debug/netcoreapp3.0
+/XISHANLZ/obj
+/LZ.Service/obj
+/LZ.Model/bin/Debug/netcoreapp3.0
+/LZ.Model/obj
+/common.Interface/obj
+/common.Core/bin/Debug/netcoreapp3.0
+/common.Core/obj
+/commom.Tool/obj
+/LZ.IService/obj
