@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Interfaces.Models.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace common.Interface
+namespace LZ.IRepository
 {
-    public interface IRepository<T> : IDisposable where T : class
+    public interface ILZRepository<T> : IDisposable where T : class
     {
         /// <summary>
         /// 显式开启数据上下文事务
@@ -88,14 +90,14 @@ namespace common.Interface
         /// </summary>
         /// <param name="entity">实体对象</param>
         /// <param name="isSave"></param>
-        void Update(T entity, bool isSave = true);
+        T Update(T entity, bool isSave = true);
 
         /// <summary>
         /// 批量修改 - 通过实体对象集合修改
         /// </summary>
         /// <param name="entitys">实体对象集合</param>
         /// <param name="isSave"></param>
-        void Update(bool isSave = true, params T[] entitys);
+        T[] Update(bool isSave = true, params T[] entitys);
 
         /// <summary>
         /// 是否满足条件
@@ -249,5 +251,21 @@ namespace common.Interface
         /// <param name="where">过滤条件</param>
         /// <returns></returns>
         TType Sum<TType>(Expression<Func<T, TType>> selector, Expression<Func<T, bool>> @where) where TType : new();
+
+
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        Task<int> SaveChangesAsync();
+        Task<T> UpdateAsync(T entity);
+        Task<T> InsertAsync(T entity);
+        /// <summary>
+        /// 分页
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="condition"></param>
+        /// <param name="orderByExpression"></param>
+        /// <param name="isDesc"></param>
+        /// <returns></returns>
+        PageData<T> FindPage(int pageIndex, int pageSize, Expression<Func<T, bool>> condition, Expression<Func<T, object>> orderByExpression, bool isDesc);
     }
 }

@@ -1,1 +1,3 @@
-Scaffold-DbContext "server=.;database=LZ;uid=sa;pwd=123123;" Microsoft.EntityFrameworkCore.SqlServer -O Models -F
+在 "程序包管理器控制台" 中选中 "LZ.Model" 
+输入 :
+Scaffold-DbContext "server=.;database=LZ;uid=sa;pwd=123456;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force  -Context EntityContext -ContextDir EntityContext

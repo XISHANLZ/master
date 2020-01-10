@@ -1,0 +1,58 @@
+﻿<#@ template language="C#" hostspecific="true" debug="True" #>
+ <#@ assembly name="System.Core" #>
+ <#@ assembly name="System.Data" #>
+ <#@ import namespace="System" #>
+ <#@ import namespace="System.IO" #>
+ <#
+     var path = Path.GetDirectoryName(this.Host.TemplateFile); // Windows OS
+     DirectoryInfo d1 = new DirectoryInfo(path);// Windows OS
+     var f = d1.GetFiles("*.csproj");
+	 string baseNameSpace = Path.GetFileNameWithoutExtension(f[0].Name);
+     DirectoryInfo d = new DirectoryInfo(d1.Parent.FullName +  @"\LZ.Model\Models" ); // Windows OS
+	 FileInfo[] Files = d.GetFiles("*.cs");  
+	 foreach (var file in Files)
+	{
+		var item= Path.GetFileNameWithoutExtension(file.Name);
+		var spt= item.Split('_');
+		var r="";
+		foreach (var str in spt)
+		{
+			r+= str.Substring(0,1).ToUpper() + str.Substring(1);
+        }
+	#>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using LZ.IRepository;
+using LZ.Model.Models;
+
+namespace LZ.IRepository.IRepository 
+{
+ 
+    public partial interface I<#= r #>Repository:ILZRepository<<#= item#>>
+    {
+       
+    }
+ 
+}
+<#
+SaveFile ("I"+r + "RepositoryT4.cs", "IRepository");
+}
+#>
+
+<#+
+void SaveFile (string outputFileName, string destinationFolder)
+{
+// Get the Path of the current file
+var path = Path.GetDirectoryName(this.Host.TemplateFile); 
+string newDir = Path.Combine(path, destinationFolder); 
+// Create a new directory with the "destinationFolder" name 
+System.IO.Directory.CreateDirectory(newDir); 
+string outputFile = Path.Combine(newDir, outputFileName);
+File.Delete(outputFile); 
+File.WriteAllText(outputFile, this.GenerationEnvironment.ToString()); 
+this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+}
+#>

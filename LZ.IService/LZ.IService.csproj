@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LZ.IRepository\LZ.IRepository.csproj" />
+    <ProjectReference Include="..\LZ.Model\LZ.Model.csproj" />
+  </ItemGroup>
+
 </Project>

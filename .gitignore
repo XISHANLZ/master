@@ -17,3 +17,5 @@
 /common.Interface/bin/Debug/netcoreapp3.0
 /LZ.IService/bin/Debug/netcoreapp3.0
 /LZ.Service/bin/Debug/netcoreapp3.0
+/LZ.IRepository/obj
+/LZ.Repository/obj

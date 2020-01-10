@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\common.Interface\common.Interface.csproj" />
     <ProjectReference Include="..\LZ.Model\LZ.Model.csproj" />
   </ItemGroup>
 
