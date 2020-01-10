@@ -41,7 +41,7 @@ namespace LZ.web
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public AutofacServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
 
@@ -62,16 +62,40 @@ namespace LZ.web
             var builder = new ContainerBuilder();
             builder.Populate(services);
 
-            var serviceAssembly = Assembly.Load("LZ.Services");
-            builder.RegisterAssemblyTypes(serviceAssembly).Where(o => o.Name.Contains("Service")).AsImplementedInterfaces().PropertiesAutowired();
-            var repositoryAssembly = Assembly.Load("LZ.Repository");
-            builder.RegisterAssemblyTypes(repositoryAssembly).Where(o => o.Name.Contains("Repository")).AsImplementedInterfaces().PropertiesAutowired();
-            //builder.Register(c => new TokenAuthorizeAttribute(c.Resolve<IUserRoleActionAuthorityRepository>(), c.Resolve<IUserRepository>(), c.Resolve<IRoleViewService>())).InstancePerRequest().PropertiesAutowired();
+            ConfigureContainer(builder);
+            
 
            return new AutofacServiceProvider(builder.Build());
             #endregion
         }
+        //public void ConfigureContainer(ContainerBuilder builder)
+        //{
+        //    //添加依赖注入关系
+        //    builder.RegisterModule(new AutofacModuleRegister());
+        //    var controllerBaseType = typeof(ControllerBase);
+        //    //在控制器中使用依赖注入
+        //    builder.RegisterAssemblyTypes(typeof(Program).Assembly)
+        //        .Where(t => controllerBaseType.IsAssignableFrom(t) && t != controllerBaseType)
+        //        .PropertiesAutowired();
+        //}
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            var serviceAssembly = Assembly.Load("LZ.Service");
+            builder.RegisterAssemblyTypes(serviceAssembly).Where(o => o.Name.Contains("Service")).AsImplementedInterfaces().PropertiesAutowired();
+            var repositoryAssembly = Assembly.Load("LZ.Repository");
+            builder.RegisterAssemblyTypes(repositoryAssembly).Where(o => o.Name.Contains("Repository")).AsImplementedInterfaces().PropertiesAutowired();
+            //builder.RegisterAssemblyTypes(typeof(Program).Assembly).
+            //    Where(x => x.Name.EndsWith("service", StringComparison.OrdinalIgnoreCase)).AsImplementedInterfaces();
+            //builder.Register(c => new TokenAuthorizeAttribute(c.Resolve<IUserRoleActionAuthorityRepository>(), c.Resolve<IUserRepository>(), c.Resolve<IRoleViewService>())).InstancePerRequest().PropertiesAutowired();
 
+            //    builder.RegisterAssemblyTypes(typeof(Program).Assembly).
+            //Where(x => x.Name.EndsWith("service", StringComparison.OrdinalIgnoreCase)).AsImplementedInterfaces();
+            //    builder.RegisterDynamicProxy();
+
+            //    builder.RegisterAssemblyTypes(this.GetType().Assembly)
+            //.AsImplementedInterfaces()
+            //.PropertiesAutowired();
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -83,6 +107,14 @@ namespace LZ.web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            //跨域配置，必需在app.UserMvc 或者app.Run 前
+            //app.UseCors(e =>
+            //{
+            //    e.AllowAnyMethod();
+            //    e.AllowAnyOrigin();
+            //    e.AllowAnyHeader();
+            //});
+            //app.UseMvc();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -95,14 +127,8 @@ namespace LZ.web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            //跨域配置，必需在app.UserMvc 或者app.Run 前
-            app.UseCors(e =>
-            {
-                e.AllowAnyMethod();
-                e.AllowAnyOrigin();
-                e.AllowAnyHeader();
-            });
-            app.UseMvc();
+            
+           
         }
     }
 }
