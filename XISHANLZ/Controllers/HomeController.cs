@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LZ.web.Models;
+using common.Tools.Helper;
 
 namespace LZ.web.Controllers
 {
@@ -21,6 +22,7 @@ namespace LZ.web.Controllers
         public IActionResult Index()
         {
             ViewData["indexviewmodel"] = "从home/index 里进入程序";
+            LogHelper.Info("index进入");
             return View();
         }
 
