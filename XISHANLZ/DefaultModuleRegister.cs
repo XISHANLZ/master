@@ -1,0 +1,31 @@
+﻿using Autofac;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
+using System.Threading.Tasks;
+
+namespace LZ.Web
+{
+    public class DefaultModuleRegister : Autofac.Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            ////注册当前程序集中以“Service”及“Repository”结尾的类,暴漏类实现的所有接口，生命周期为PerLifetimeScope
+
+            //以“Service”及“Repository”结尾的类是利用发型实现的数据仓库的管理及业务处理的类和接口
+
+            builder.RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Repository")).AsImplementedInterfaces().InstancePerLifetimeScope();
+
+        }
+
+        public static Assembly GetAssembly(string assemblyName)
+        {
+            var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(AppContext.BaseDirectory + $"{assemblyName}.dll");
+            return assembly;
+        }
+
+    }
+}
