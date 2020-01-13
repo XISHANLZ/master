@@ -18,9 +18,11 @@
 /LZ.IService/bin/Debug/netcoreapp3.0
 /LZ.Service/bin/Debug/netcoreapp3.0
 /LZ.IRepository/obj
+/LZ.IRepository/bin
 /LZ.Repository/obj
 /LZ.Repository/bin
 /XISHANLZ/logs/error
 /XISHANLZ/logs
 /XISHANLZ/logs/info
+
 

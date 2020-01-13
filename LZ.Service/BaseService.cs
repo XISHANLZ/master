@@ -1,7 +1,9 @@
-﻿using LZ.IRepository.IRepository;
+﻿using common.Tools.Helper;
+using LZ.IRepository.IRepository;
 using LZ.IService;
 using LZ.Model.Models;
 using LZ.Model.Request;
+using LZ.Model.Response;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ namespace LZ.Service
     public class BaseService : IBaseService
     {
         private readonly IUserRepository _userRepository;
-        private ILogger<BaseService> logger;
+        private ILogger<BaseService> _logger;
 
         public BaseService(IUserRepository userRepository)
         {
@@ -30,9 +32,35 @@ namespace LZ.Service
         /// 获取用户 用 框架获取的例子 
         /// </summary>
         /// <returns></returns>
-        public List<User> GetUserList()
+        public GetUserListResponse GetUserList(BasePageRequest request)
         {
-            return _userRepository.GetAll(s => s.Id > 0).Take(100).ToList();
+            LogHelper.Info("获取用户");
+            var userList = _userRepository.GetAll(s => s.Id > 0).OrderByDescending(s => s.CreateTime).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
+            GetUserListResponse result = new GetUserListResponse();
+            foreach (var item in userList)
+            {
+                //result.userListResponse.Add(new GetUserResponse()
+                //{
+                //    Id = item.Id,
+                //    Name = item.Name,
+                //    Account = item.Account,
+                //    CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                //    UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                //    PassWord = RSACryptionHelper.RSAEncrypt(item.PassWord),
+                //});
+                var model = new GetUserResponse()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Account = item.Account,
+                    CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    PassWord = RSACryptionHelper.RSAEncrypt(item.PassWord),
+                };
+                result.userListResponse.Add(model);
+            }
+            return result;
+
         }
         /// <summary>
         /// 获取用户 用sql 的例子
@@ -40,7 +68,9 @@ namespace LZ.Service
         /// <returns></returns>
         public List<User> GetUserListByName(GetUserRequest request)
         {
+            LogHelper.Info("获取用户" + request.UserName);
             return _userRepository.GetUserListByName(request);
+
         }
         /// <summary>
         /// 通过id获取 用户信息
@@ -49,7 +79,54 @@ namespace LZ.Service
         /// <returns></returns>
         public async Task<User> GetUserByID(long ID)
         {
-            return await _userRepository.FirstOrDefaultAsync(s=>s.Id==ID);
+            LogHelper.Info("获取用户" + ID);
+            return await _userRepository.FirstOrDefaultAsync(s => s.Id == ID);
+        }
+        /// <summary>
+        /// 删除 用户
+        /// </summary>
+        /// <param name="Id"></param>
+        public void DeleteUser(long Id)
+        {
+            LogHelper.Info("删除用户" + Id);
+            _userRepository.Delete(s => s.Id == Id);
+            _userRepository.SaveChangesAsync();
+        }
+        /// <summary>
+        /// 修改用户信息
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<User> EditUser(EditUserRequest request)
+        {
+            LogHelper.Info("EditUser" + request.Id);
+            var user = GetUserByID(request.Id).Result;
+            if (user != null)
+            {
+                user.Name = request.Name;
+                user.Account = request.Account;
+                user.PassWord = RSACryptionHelper.RSADecrypt(request.PassWord);
+                user.UpdateTime = DateTime.Now;
+                _ = _userRepository.UpdateAsync(user);
+                await _userRepository.SaveChangesAsync();
+                return user;
+            }
+            else
+            {
+                return new User();
+            }
+
+        }
+
+        /// <summary>
+        /// 新增用户
+        /// </summary>
+        /// <returns></returns>
+        public User CreateUser(User user)
+        {
+            _userRepository.InsertAsync(user);
+            _userRepository.SaveChanges();
+            return user;
         }
     }
 }

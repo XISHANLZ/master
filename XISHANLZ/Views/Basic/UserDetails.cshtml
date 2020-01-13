@@ -2,7 +2,8 @@
 @{
     Layout = null;
 }
-
+@model LZ.Model.Models.User
+@using common.Tools.Helper;
 <!DOCTYPE html>
 
 <html>
@@ -12,7 +13,10 @@
 </head>
 <body>
     <div>
-
+        <h2>用户数据展示</h2>
+        <label>用户名</label>@Model.Name
+        <label>帐号</label>@Model.Account
+        <label>密码</label>@RSACryptionHelper.RSAEncrypt(Model.PassWord)
     </div>
 </body>
 </html>

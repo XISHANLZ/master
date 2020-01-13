@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-@model List<LZ.Model.Models.User>
+@model LZ.Model.Response.GetUserListResponse
 <!DOCTYPE html>
 
 <html>
@@ -29,7 +29,7 @@
 
 
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.userListResponse)
             {
                 <tr>
                     <th>
@@ -44,6 +44,7 @@
                     <th>
                         创建时间
                     </th>
+                    <th>操作</th>
                 </tr>
 
                 <tr>
@@ -51,6 +52,23 @@
                     <td>@item.Name</td>
                     <td>@item.Account</td>
                     <td>@item.CreateTime</td>
+                    <td>@item.UpdateTime</td>
+                    @if (item.Id > 1)
+                    {
+                        <td>@item.PassWord</td>
+                    }
+                    else
+                    {
+                        <td>******</td>
+                    }
+                    <td>
+                        <a href="/basic/userdetail">详情</a>
+                        @if (@item.Id > 1)
+                        {
+                            <a onclick="/basic/useredit?Id=@item.Id">修改</a>
+                            <a onclick="delete(@item.Id)">删除</a>
+                        }
+                    </td>
                 </tr>
             }
         </table>
