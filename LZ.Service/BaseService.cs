@@ -2,10 +2,12 @@
 using LZ.IService;
 using LZ.Model.Models;
 using LZ.Model.Request;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LZ.Service
 {
@@ -16,10 +18,14 @@ namespace LZ.Service
     public class BaseService : IBaseService
     {
         private readonly IUserRepository _userRepository;
+        private ILogger<BaseService> logger;
+
         public BaseService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
+
+
         /// <summary>
         /// 获取用户 用 框架获取的例子 
         /// </summary>
@@ -35,6 +41,15 @@ namespace LZ.Service
         public List<User> GetUserListByName(GetUserRequest request)
         {
             return _userRepository.GetUserListByName(request);
+        }
+        /// <summary>
+        /// 通过id获取 用户信息
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public async Task<User> GetUserByID(long ID)
+        {
+            return await _userRepository.FirstOrDefaultAsync(s=>s.Id==ID);
         }
     }
 }

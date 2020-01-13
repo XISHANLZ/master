@@ -22,6 +22,8 @@ namespace LZ.web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                }).UseServiceProviderFactory(new AutofacServiceProviderFactory());
+                })
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            .ConfigureServices(services=>services.AddAutofac());
     }
 }

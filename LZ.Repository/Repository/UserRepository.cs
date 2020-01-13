@@ -14,6 +14,10 @@ namespace Interfaces.Repository.Repository
  
     public partial class UserRepository:LZRepository<User>, IUserRepository
     {
+        public UserRepository()
+        {
+
+        }
         /// <summary>
         /// 通过条件获取用户
         /// </summary>

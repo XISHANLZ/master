@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LZ.IService
 {
@@ -15,5 +16,12 @@ namespace LZ.IService
         /// </summary>
         /// <returns></returns>
         List<User> GetUserList();
+
+        /// <summary>
+        /// 通过id获取 用户信息
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        Task<User> GetUserByID(long ID);
     }
 }

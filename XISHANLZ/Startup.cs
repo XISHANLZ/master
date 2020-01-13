@@ -104,7 +104,8 @@ namespace LZ.web
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DefaultModuleRegister>();
+            builder.RegisterModule(new DefaultModuleRegister());
+            //builder.RegisterModule<DefaultModuleRegister>();
         }
         //public void ConfigureContainer(ContainerBuilder builder)
         //{

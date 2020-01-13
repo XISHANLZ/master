@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+@model List<LZ.Model.Models.User>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UserIndex</title>
+    <style>
+        table {
+            border: 1px solid black;
+        }
+
+        th {
+            border: 1px solid black;
+        }
+
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <table>
+
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th>
+                        编号
+                    </th>
+                    <th>
+                        名字
+                    </th>
+                    <th>
+                        账号
+                    </th>
+                    <th>
+                        创建时间
+                    </th>
+                </tr>
+
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Account</td>
+                    <td>@item.CreateTime</td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
