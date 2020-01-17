@@ -27,3 +27,9 @@
 /XISHANLZ/logs/info
 
 
+/LZ.Service/bin/Release/netcoreapp3.0
+/LZ.Model/bin/Release/netcoreapp3.0
+/LZ.IService/bin/Release/netcoreapp3.0
+/LZ.IRepository/bin/Release/netcoreapp3.0
+/commom.Tool/bin/Release/netcoreapp3.0
+/XISHANLZ/bin/Release/netcoreapp3.0
