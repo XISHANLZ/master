@@ -108,11 +108,11 @@ namespace LZ.Web.Controllers
         //    }
         //}
         // POST: Base/Edit/5
-         /// <summary>
-         /// 修改用户
-         /// </summary>
-         /// <param name="request"></param>
-         /// <returns></returns>
+        /// <summary>
+        /// 修改用户
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UserEdit(EditUserRequest request)
@@ -132,18 +132,18 @@ namespace LZ.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UserDelete(int id)
+        public bool UserDelete([FromBody]BaseRequest request)
         {
             try
             {
                 // TODO: Add delete logic here
-                _baseService.DeleteUser(id);
-                return RedirectToAction("UserIndex");
+                _baseService.DeleteUser(request.Id);
+                //_baseService.DeleteUser(Id);
+                return true;
             }
             catch
             {
-                return View();
+                return false;
             }
         }
     }

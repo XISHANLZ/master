@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LZ.IService", "..\LZ.IServi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{B3A12300-A43B-4C64-8666-649C6CF6C9EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZ.Repository", "..\LZ.Repository\LZ.Repository.csproj", "{D15B64FF-E559-49E4-A325-1B6BC2F38A88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LZ.Repository", "..\LZ.Repository\LZ.Repository.csproj", "{D15B64FF-E559-49E4-A325-1B6BC2F38A88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZ.IRepository", "..\LZ.IRepository\LZ.IRepository.csproj", "{D217CE67-1242-4FD3-9852-427643312CDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LZ.IRepository", "..\LZ.IRepository\LZ.IRepository.csproj", "{D217CE67-1242-4FD3-9852-427643312CDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

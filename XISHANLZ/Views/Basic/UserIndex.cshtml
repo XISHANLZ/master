@@ -24,20 +24,25 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script type="text/javascript">
-        function delete (id) {
+        function deleteUser(id) {
             $.ajax({
                 type: "POST",
-                url: "/basic/delete",
-                //beforeSend: function (xhr) {
-                //    xhr.setRequestHeader("XSRF-TOKEN",
-                //        $('input:hidden[name="__RequestVerificationToken"]').val());
-                //},
-                data: { Id: id },
+                url: "/Basic/UserDelete",
+                dataType: "json",
+                contentType:"application/json",
+                data: JSON.stringify({ Id: id }) ,
                 success: function (response) {
-                    console.log(response);
+                    if (response) {
+                        alert("删除成功用户编号："+id);
+                        window.location.reload();
+                    } else {
+                        alert("删除失败用户编号："+id);
+                       console.log("删除失败"+response);
+                    }
                 },
                 failure: function (response) {
                     alert(response);
+                    
                 }
             });
 
@@ -85,7 +90,7 @@
                         {
                     <a href="/basic/userdetails?Id=@item.Id">详情</a>
                     <a href="/basic/useredit?Id=@item.Id">修改</a>
-                    <a onclick="delete(@item.Id)">删除</a>
+                    <a href="javascript: void(0)" onclick="deleteUser(@item.Id)">删除</a>
                         }
                 </td>
             </tr>
