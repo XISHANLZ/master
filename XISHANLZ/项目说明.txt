@@ -15,3 +15,4 @@ Repository：仓储层（数据抓取层）：封装的方法EF+自己写sql
 Service：逻辑处理层（数据处理层）：大规模的逻辑处理、可调用多个 仓储层
 LZ.Web：基于MVC框架的 表现层 主要提供 controller(控制器)、view(视图)、页面采用Razor语法
 
+Model/LZ.Model/LZ.sql 是数据库结构
