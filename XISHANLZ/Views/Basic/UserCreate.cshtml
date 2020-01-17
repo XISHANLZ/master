@@ -1,0 +1,26 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UserCreate</title>
+</head>
+<body>
+    <form method="post" asp-controller="Basic" asp-action="UserCreate">
+        <fieldset class="form-group">
+            <label for="sessionName">姓名：</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" required />
+            <label for="sessionName">帐号：</label>
+            <input type="text" class="form-control" id="Account" name="Account" placeholder="Account" required />
+            <label for="sessionName">密码：</label>
+            <input type="text" class="form-control" id="PassWord" name="PassWord" placeholder="PassWord" required />
+        </fieldset>
+        <input type="submit" value="Save" id="SaveButton" name="SaveButton" class="btn btn-primary" />
+    </form>
+</body>
+</html>

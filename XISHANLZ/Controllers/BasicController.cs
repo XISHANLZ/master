@@ -22,6 +22,11 @@ namespace LZ.Web.Controllers
         }
         #endregion
         // GET: Base
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public ActionResult UserIndex(BasePageRequest request)
         {
             var userList = _baseService.GetUserList(request);
@@ -29,26 +34,46 @@ namespace LZ.Web.Controllers
         }
 
         // GET: Base/Details/5
+        /// <summary>
+        /// 用户详情页面
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public ActionResult UserDetails(int Id)
         {
             var user = _baseService.GetUserByID(Id).Result;
             return View(user);
         }
 
-
+        // POST: Base/Create
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserCreate()
+        {
+            return View();
+        }
+        // POST: Base/Create
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserEdit(long Id)
+        {
+            var user = _baseService.GetUserByID(Id).Result;
+            return View(user);
+        }
 
         // POST: Base/Create
+        /// <summary>
+        /// 创建用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserCreate(IFormCollection collection)
+        public ActionResult UserCreate(User user)
         {//mvc原生 不推荐 ，需要手动转码，推荐UserEdit方式
             try
             {
                 // TODO: Add insert logic here
-                User user = new User();
-                user.Name = collection["Name"].ToString();
-                user.Account = collection["Account"].ToString();
-                user.PassWord = RSACryptionHelper.RSAEncrypt(collection["PassWord"].ToString());
                 user.CreateTime = DateTime.Now;
                 user.UpdateTime = DateTime.Now;
                 user.CreateUserId = 1;
@@ -61,8 +86,36 @@ namespace LZ.Web.Controllers
                 return View();
             }
         }
-
+        //// POST: Base/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult UserCreate(IFormCollection collection)
+        //{//mvc原生 不推荐 ，需要手动转码，推荐UserEdit方式
+        //    try
+        //    {
+        //        // TODO: Add insert logic here
+        //        User user = new User();
+        //        user.Name = collection["Name"].ToString();
+        //        user.Account = collection["Account"].ToString();
+        //        user.PassWord = RSACryptionHelper.RSAEncrypt(collection["PassWord"].ToString());
+        //        user.CreateTime = DateTime.Now;
+        //        user.UpdateTime = DateTime.Now;
+        //        user.CreateUserId = 1;
+        //        user.CreateUserName = "管理员";
+        //        _baseService.CreateUser(user);
+        //        return RedirectToAction("UserIndex");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
         // POST: Base/Edit/5
+         /// <summary>
+         /// 修改用户
+         /// </summary>
+         /// <param name="request"></param>
+         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UserEdit([FromBody]EditUserRequest request)
@@ -76,6 +129,11 @@ namespace LZ.Web.Controllers
 
 
         // POST: Base/Delete/5
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UserDelete(int id)

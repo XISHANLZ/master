@@ -45,16 +45,18 @@ namespace LZ.web
 
         public IConfiguration Configuration { get; }
         public static IContainer AutofacContainer;
+
         // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
 
-            
+
             // 配置EF服务注册
+            //b => b.UseRowNumberForPaging()) 适配2008数据库 ，如果用2012 就删掉
             services.AddDbContext<EntityContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
-
             services.AddMvcCore()
                 .AddAuthorization();//认证服务.AddJsonFormatters()        
 

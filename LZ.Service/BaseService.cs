@@ -35,7 +35,8 @@ namespace LZ.Service
         public GetUserListResponse GetUserList(BasePageRequest request)
         {
             LogHelper.Info("获取用户");
-            var userList = _userRepository.GetAll(s => s.Id > 0).OrderByDescending(s => s.CreateTime).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
+            var userList = _userRepository.Where(s => s.Id > 0).OrderByDescending(s => s.CreateTime).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
+
             GetUserListResponse result = new GetUserListResponse();
             foreach (var item in userList)
             {

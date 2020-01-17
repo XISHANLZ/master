@@ -22,6 +22,27 @@
             border: 1px solid black;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        function delete (id) {
+            $.ajax({
+                type: "POST",
+                url: "/basic/delete",
+                //beforeSend: function (xhr) {
+                //    xhr.setRequestHeader("XSRF-TOKEN",
+                //        $('input:hidden[name="__RequestVerificationToken"]').val());
+                //},
+                data: { Id: id },
+                success: function (response) {
+                    console.log(response);
+                },
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+
+        }
+    </script>
 </head>
 <body>
     <div>
@@ -65,13 +86,22 @@
                         <a href="/basic/userdetail">详情</a>
                         @if (@item.Id > 1)
                         {
-                            <a onclick="/basic/useredit?Id=@item.Id">修改</a>
+                            <a href="/basic/useredit?Id=@item.Id">修改</a>
                             <a onclick="delete(@item.Id)">删除</a>
                         }
                     </td>
                 </tr>
             }
         </table>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+
+            </div>
+            <div class="panel-body">
+                <a href="@Url.Action("Basic","CreateUser")">新增</a>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
