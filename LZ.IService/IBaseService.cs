@@ -41,6 +41,6 @@ namespace LZ.IService
         /// 新增用户
         /// </summary>
         /// <returns></returns>
-        User CreateUser(User user);
+        Task<User> CreateUser(User user);
     }
 }

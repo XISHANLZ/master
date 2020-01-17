@@ -42,19 +42,16 @@ namespace LZ.Web.Controllers
         public ActionResult UserDetails(int Id)
         {
             var user = _baseService.GetUserByID(Id).Result;
+            user.PassWord = RSACryptionHelper.RSADecrypt(user.PassWord);
             return View(user);
         }
 
         // POST: Base/Create
-        [HttpGet]
-        [ValidateAntiForgeryToken]
         public ActionResult UserCreate()
         {
             return View();
         }
         // POST: Base/Create
-        [HttpGet]
-        [ValidateAntiForgeryToken]
         public ActionResult UserEdit(long Id)
         {
             var user = _baseService.GetUserByID(Id).Result;
@@ -118,7 +115,7 @@ namespace LZ.Web.Controllers
          /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserEdit([FromBody]EditUserRequest request)
+        public ActionResult UserEdit(EditUserRequest request)
         {//推荐采用这种方式进行表单提交 json 转化了类型 
             var user = _baseService.EditUser(request);
             return RedirectToAction("UserIndex");

@@ -56,7 +56,7 @@ namespace LZ.Service
                     Account = item.Account,
                     CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    PassWord = RSACryptionHelper.RSAEncrypt(item.PassWord),
+                    //PassWord = RSACryptionHelper.RSADecrypt(item.PassWord),
                 };
                 result.userListResponse.Add(model);
             }
@@ -106,9 +106,12 @@ namespace LZ.Service
             {
                 user.Name = request.Name;
                 user.Account = request.Account;
-                user.PassWord = RSACryptionHelper.RSADecrypt(request.PassWord);
+                if (request.PassWord!= "******")
+                {
+                    user.PassWord = RSACryptionHelper.RSADecrypt(request.PassWord);
+                }
                 user.UpdateTime = DateTime.Now;
-                _ = _userRepository.UpdateAsync(user);
+                 _userRepository.UpdateAsync(user);
                 await _userRepository.SaveChangesAsync();
                 return user;
             }
@@ -123,11 +126,21 @@ namespace LZ.Service
         /// 新增用户
         /// </summary>
         /// <returns></returns>
-        public User CreateUser(User user)
+        public async Task<User> CreateUser(User user)
         {
-            _userRepository.InsertAsync(user);
-            _userRepository.SaveChanges();
-            return user;
+            try
+            {
+                user.PassWord = RSACryptionHelper.RSAEncrypt(user.PassWord); 
+                await  _userRepository.InsertAsync(user);
+                 _userRepository.SaveChanges();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                var sss=ex.Message;
+                throw;
+            }
+            
         }
     }
 }

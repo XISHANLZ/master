@@ -17,12 +17,11 @@ namespace LZ.Repository
     public class LZRepository<T> : ILZRepository<T> where T : class
     {
         private EntityContext _dbContext = LZRepositoryFactory.GetDataContext();
-        private readonly DbSet<T> _dbSet;
+        public virtual DbSet<T> _dbSet { get { return _dbContext.Set<T>(); } }
         private readonly string _connStr;
 
         public LZRepository()
         {
-            this._dbSet = _dbContext.Set<T>();
             this._connStr = _dbContext.Database.GetDbConnection().ConnectionString;
         }
 
@@ -133,33 +132,30 @@ namespace LZ.Repository
                 this.SaveChanges();
             }
         }
-
-        public T Update(T entity, bool isSave = true)
+        protected virtual void AttachIfNot(T entity)
         {
-            var entry = this._dbContext.Entry(entity);
-            if (entry.State == EntityState.Detached)
+            if (!_dbSet.Local.Contains(entity))
             {
-                entry.State = EntityState.Modified;
+                _dbSet.Attach(entity);
             }
-            if (isSave)
+        }
+        protected virtual void AttachIfNot<T>(T entity) where T : class
+        {
+            if (!_dbContext.Set<T>().Local.Contains(entity))
             {
-                this.SaveChanges();
+                _dbContext.Set<T>().Attach(entity);
             }
-            return entity;
+        }
+        public void Update(T entity)
+        {
+            AttachIfNot(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public T[] Update(bool isSave = true, params T[] entitys)
+        public void Update<TEntity1>(TEntity1 entity) where TEntity1 : class
         {
-            var entry = this._dbContext.Entry(entitys);
-            if (entry.State == EntityState.Detached)
-            {
-                entry.State = EntityState.Modified;
-            }
-            if (isSave)
-            {
-                this.SaveChanges();
-            }
-            return entitys;
+            AttachIfNot(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public bool Any(Expression<Func<T, bool>> @where)
@@ -360,13 +356,14 @@ namespace LZ.Repository
         {
             return await _dbContext.SaveChangesAsync();
         }
-        public async Task<T> UpdateAsync(T entity)
+        public async void UpdateAsync(T entity)
         {
-            return await Task.Run(() => Update(entity));
+            await Task.Run(() => Update(entity));
         }
-        public async Task<T> InsertAsync(T entity)
+ 
+        public async Task InsertAsync(T entity)
         {
-            return await Task.Run(() => Add(entity));
+             await Task.FromResult(_dbSet.Add(entity));
         }
         /// <summary>
         /// 分页

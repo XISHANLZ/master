@@ -89,15 +89,13 @@ namespace LZ.IRepository
         /// 修改 - 通过实体对象修改
         /// </summary>
         /// <param name="entity">实体对象</param>
-        /// <param name="isSave"></param>
-        T Update(T entity, bool isSave = true);
+        void Update(T entity);
 
         /// <summary>
         /// 批量修改 - 通过实体对象集合修改
         /// </summary>
         /// <param name="entitys">实体对象集合</param>
-        /// <param name="isSave"></param>
-        T[] Update(bool isSave = true, params T[] entitys);
+        void Update<TEntity1>(TEntity1 entity) where TEntity1 : class;
 
         /// <summary>
         /// 是否满足条件
@@ -255,8 +253,8 @@ namespace LZ.IRepository
 
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
         Task<int> SaveChangesAsync();
-        Task<T> UpdateAsync(T entity);
-        Task<T> InsertAsync(T entity);
+        void UpdateAsync(T entity);
+        Task InsertAsync(T entity);
         /// <summary>
         /// 分页
         /// </summary>

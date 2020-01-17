@@ -48,49 +48,47 @@
     <div>
         <table>
 
-
+            <tr>
+                <th>
+                    编号
+                </th>
+                <th>
+                    名字
+                </th>
+                <th>
+                    账号
+                </th>
+                <th>
+                    创建时间
+                </th>
+                <th>
+                    更新时间
+                </th>
+               
+                <th>操作</th>
+            </tr>
 
             @foreach (var item in Model.userListResponse)
             {
-                <tr>
-                    <th>
-                        编号
-                    </th>
-                    <th>
-                        名字
-                    </th>
-                    <th>
-                        账号
-                    </th>
-                    <th>
-                        创建时间
-                    </th>
-                    <th>操作</th>
-                </tr>
 
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Name</td>
-                    <td>@item.Account</td>
-                    <td>@item.CreateTime</td>
-                    <td>@item.UpdateTime</td>
-                    @if (item.Id > 1)
-                    {
-                        <td>@item.PassWord</td>
-                    }
-                    else
-                    {
-                        <td>******</td>
-                    }
-                    <td>
-                        <a href="/basic/userdetail?Id=@item.Id">详情</a>
-                        @if (@item.Id > 1)
+
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Account</td>
+                <td>@item.CreateTime</td>
+                <td>@item.UpdateTime</td>
+               
+                <td>
+
+                    @if (@item.Id > 1)
                         {
-                            <a href="/basic/useredit?Id=@item.Id">修改</a>
-                            <a onclick="delete(@item.Id)">删除</a>
+                    <a href="/basic/userdetails?Id=@item.Id">详情</a>
+                    <a href="/basic/useredit?Id=@item.Id">修改</a>
+                    <a onclick="delete(@item.Id)">删除</a>
                         }
-                    </td>
-                </tr>
+                </td>
+            </tr>
             }
         </table>
         <div class="panel panel-default">
@@ -98,7 +96,7 @@
 
             </div>
             <div class="panel-body">
-                <a href="@Url.Action("Basic","CreateUser")">新增</a>
+                <a href="/basic/UserCreate" >新增</a>
             </div>
         </div>
 
